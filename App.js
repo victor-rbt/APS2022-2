@@ -5,12 +5,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import * as Location from "expo-location";
 
 export default function App() {
-  let [posicao, setPosicao] = useState({
-    latitude: -23.51258725474799,
-    longitude: -46.60913812329917,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
+  let [posicao, setPosicao] = useState();
 
   useEffect(() => {
     (async () => {
@@ -18,6 +13,12 @@ export default function App() {
 
       if(status !== "granted"){
         Alert.alert("Ops!", "Não foi possível acessar localização atual, setamos a localização padrão.");
+        setPosicao({
+          latitude: -23.51258725474799,
+          longitude: -46.60913812329917,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        })
       }
   
       let {coords: {latitude, longitude}} = await Location.getCurrentPositionAsync();
@@ -32,12 +33,8 @@ export default function App() {
   return (
     <View style={styles.container}>
       <MapView
-        provider={PROVIDER_GOOGLE} style={styles.map} region={{
-          latitude: -23.51258725474799,
-          longitude: -46.60913812329917,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421}} showsTraffic={true}>
-          {/* <MapViewDirections
+        provider={PROVIDER_GOOGLE} style={styles.map} region={posicao} showsTraffic={true}>
+          <MapViewDirections
             origin={{
               latitude: -23.51258725474799,
               longitude: -46.60913812329917,
@@ -48,8 +45,7 @@ export default function App() {
               longitude: -46.542634688577536,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421}}
-            apikey={''} mode={'transit'}
-          /> */}
+            apikey={'AIzaSyBDCA4ZQ01pb9SfXD1wFY2gZEviuVqyG78'} strokeWidth={3} />
       </MapView>
     </View>
   );
